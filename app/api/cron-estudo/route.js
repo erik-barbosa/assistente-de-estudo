@@ -1,67 +1,40 @@
 import { NextResponse } from 'next/server';
-import * as cheerio from 'cheerio';
-import { createClient } from '@supabase/supabase-js';
-import { generateObject } from 'ai';
-import { google } from '@ai-sdk/google';
-import { z } from 'zod';
+import { gerarEstudoDaSemana } from '../../../lib/estudos';
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 120;
 
-export async function GET() {
-  try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+export async function GET(request) {
+  const segredo = process.env.CRON_SECRET;
+  const autorizado = Boolean(segredo) && request.headers.get('authorization') === `Bearer ${segredo}`;
 
-    if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Variáveis de ambiente do Supabase não estão configuradas na Vercel.');
+  if (segredo && !autorizado) {
+    return NextResponse.json({ sucesso: false, erro: 'Não autorizado.' }, { status: 401 });
+  }
+
+  // Escolher outra semana ou refazer um estudo custa uma nova chamada de IA, então exige o CRON_SECRET.
+  const parametros = new URL(request.url).searchParams;
+  const data = parametros.get('data');
+  const opcoes = {};
+  if (autorizado) {
+    if (data && !/^\d{4}-\d{2}-\d{2}$/.test(data)) {
+      return NextResponse.json({ sucesso: false, erro: 'Use data no formato AAAA-MM-DD.' }, { status: 400 });
     }
+    if (data) opcoes.data = data;
+    opcoes.forcar = parametros.get('forcar') === '1';
+  }
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // 1. Raspagem do conteúdo no JW.org
-    const url = 'https://www.jw.org/pt/biblioteca/jw-apostila-do-mes/';
-    const response = await fetch(url, { cache: 'no-store' });
-    const html = await response.text();
-    const $ = cheerio.load(html);
-
-    const titulo = $('h1').first().text().trim() || 'Apostila de Estudo';
-    const trechoTexto = $('article, .docSubContent, .synopsis').text().replace(/\s+/g, ' ').slice(0, 3000) || 'Conteúdo de estudo.';
-    const semanaAtual = new Date().toISOString().slice(0, 10);
-
-    // 2. Geração estruturada com Vercel AI SDK
-    const { object } = await generateObject({
-      model: google('gemini-1.5-flash'),
-      schema: z.object({
-        resumo: z.string().describe('Resumo estruturado em tópicos concisos, exclusivamente em português do Brasil.')
-      }),
-      prompt: `Faça um resumo de estudo em tópicos do seguinte texto:\n\n${trechoTexto}`
-    });
-
-    const respostaIa = object.resumo;
-
-    // 3. Gravar no Supabase
-    const { error } = await supabase
-      .from('estudos')
-      .insert([
-        {
-          semana: semanaAtual,
-          titulo: titulo,
-          conteudo: { 
-            resumoIa: respostaIa,
-            extraidoEm: new Date().toISOString() 
-          }
-        }
-      ]);
-
-    if (error) throw error;
-
+  try {
+    const resultado = await gerarEstudoDaSemana(opcoes);
     return NextResponse.json({
       sucesso: true,
-      mensagem: 'Estudo gerado com Vercel AI SDK e salvo no Supabase com sucesso!',
-      titulo,
-      resumoIa: respostaIa
+      mensagem: resultado.criado
+        ? 'Programação lida e respostas geradas com sucesso.'
+        : 'O estudo desta semana já estava gerado.',
+      ...resultado,
     });
   } catch (error) {
+    console.error('Falha ao gerar o estudo da semana:', error);
     return NextResponse.json({ sucesso: false, erro: error.message }, { status: 500 });
   }
 }
