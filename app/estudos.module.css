@@ -1,0 +1,249 @@
+.pagina {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.titulo {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 800;
+  text-wrap: balance;
+}
+
+.subtitulo {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.gerar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.botao {
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.botao:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.botao:focus-visible,
+.resumo:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.aviso,
+.erro {
+  margin: 0;
+  min-height: 21px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.erro {
+  color: var(--destructive);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vazio,
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.vazio {
+  padding: 28px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.resumo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 18px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.semana {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.leitura {
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--primary-tint);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 24px 24px;
+}
+
+.meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.meta a {
+  color: var(--primary);
+}
+
+.secao {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.secaoTitulo {
+  margin: 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.parte {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.parteTitulo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.duracao {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.parteSimples {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.linhas,
+.pontos {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.linhas {
+  color: var(--muted);
+}
+
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rotulo {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.respostas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+}
+
+.resposta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: var(--background);
+}
+
+.resposta dt {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.resposta dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.base {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.rodape {
+  margin: 32px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: pretty;
+}
