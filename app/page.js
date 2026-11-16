@@ -6,6 +6,16 @@ import styles from './estudos.module.css';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 120;
 
+/** No sábado e no domingo o estudo mais novo já é o da semana seguinte, mas a reunião do fim de semana é a da semana atual. */
+function indiceDaSemanaAtual(estudos) {
+  const hoje = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo' }).format(new Date());
+  const indice = estudos.findIndex((estudo) => {
+    const domingo = new Date(Date.parse(estudo.semana) + 6 * 86_400_000).toISOString().slice(0, 10);
+    return estudo.semana <= hoje && hoje <= domingo;
+  });
+  return Math.max(indice, 0);
+}
+
 export default async function Home() {
   let estudos = [];
   let erro = null;
@@ -17,12 +27,15 @@ export default async function Home() {
     erro = error.message;
   }
 
+  const indiceAberto = indiceDaSemanaAtual(estudos);
+
   return (
     <main className={styles.pagina}>
       <header className={styles.cabecalho}>
         <h1 className={styles.titulo}>📖 Assistente de Estudos</h1>
         <p className={styles.subtitulo}>
-          Programação da reunião da semana com respostas e pontos de estudo gerados por Inteligência Artificial
+          Reunião do meio de semana e estudo de A Sentinela do fim de semana, com respostas e pontos de estudo gerados
+          por Inteligência Artificial
         </p>
         <GenerateStudyButton />
       </header>
@@ -38,7 +51,7 @@ export default async function Home() {
       ) : (
         <div className={styles.lista}>
           {estudos.map((estudo, indice) => (
-            <StudyCard key={estudo.id} estudo={estudo} aberto={indice === 0} />
+            <StudyCard key={estudo.id} estudo={estudo} aberto={indice === indiceAberto} />
           ))}
         </div>
       )}
