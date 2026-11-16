@@ -128,8 +128,48 @@
   font-size: 13px;
 }
 
-.meta a {
+.meta a,
+.atalhos a {
   color: var(--primary);
+}
+
+.atalhos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.atalhos a {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.reuniao {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  scroll-margin-top: 16px;
+}
+
+.reuniao + .reuniao {
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.reuniaoTitulo {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.tema {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .secao {
