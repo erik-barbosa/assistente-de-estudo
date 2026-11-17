@@ -8,7 +8,9 @@ function Respostas({ itens }) {
           <dt>{item.pergunta}</dt>
           <dd>
             {item.resposta || 'A IA não gerou resposta para esta pergunta.'}
-            {item.base ? <span className={styles.base}>Base: {item.base}</span> : null}
+            {item.base ? <span className={styles.base}>
+                <span className={styles.marca}>Base: {item.base}</span>
+              </span> : null}
           </dd>
         </div>
       ))}
