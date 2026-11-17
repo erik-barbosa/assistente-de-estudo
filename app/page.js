@@ -32,7 +32,7 @@ export default async function Home() {
   return (
     <main className={styles.pagina}>
       <header className={styles.cabecalho}>
-        <h1 className={styles.titulo}>📖 Assistente de Estudos</h1>
+        <h1 className={styles.titulo}>Assistente de Estudos</h1>
         <p className={styles.subtitulo}>
           Reunião do meio de semana e estudo de A Sentinela do fim de semana, com respostas e pontos de estudo gerados
           por Inteligência Artificial
