@@ -1,4 +1,5 @@
 import styles from '../app/estudos.module.css';
+import { MeetingTabs } from './meeting-tabs';
 
 function Respostas({ itens }) {
   return (
@@ -141,7 +142,7 @@ function FimDeSemana({ id, sentinela }) {
   );
 }
 
-export function StudyCard({ estudo, aberto }) {
+export function StudyCard({ estudo, aberto, abaInicial }) {
   const conteudo = estudo.conteudo ?? {};
   const idMeio = `meio-de-semana-${estudo.semana}`;
   const idFim = `fim-de-semana-${estudo.semana}`;
@@ -162,13 +163,13 @@ export function StudyCard({ estudo, aberto }) {
       <div className={styles.corpo}>
         <p className={styles.meta}>Gerado em {geradoEm}</p>
 
-        <nav className={styles.atalhos} aria-label={`Reuniões da semana de ${estudo.titulo}`}>
-          <a href={`#${idMeio}`}>Meio de semana</a>
-          <a href={`#${idFim}`}>Fim de semana</a>
-        </nav>
-
-        <MeioDeSemana id={idMeio} conteudo={conteudo} />
-        <FimDeSemana id={idFim} sentinela={conteudo.sentinela} />
+        <MeetingTabs
+          idBase={estudo.semana}
+          rotulo={`Reuniões da semana de ${estudo.titulo}`}
+          inicial={abaInicial}
+          meio={<MeioDeSemana id={idMeio} conteudo={conteudo} />}
+          fim={<FimDeSemana id={idFim} sentinela={conteudo.sentinela} />}
+        />
       </div>
     </details>
   );
