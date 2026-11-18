@@ -7,6 +7,8 @@ const fonteSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-serif'
 export const metadata = {
   title: 'Assistente de Estudo',
   description: 'Gerador automático de respostas para o estudo da semana',
+  icons: { icon: '/icon-192.png', apple: '/apple-icon.png' },
+  appleWebApp: { capable: true, title: 'Assistente de Estudo', statusBarStyle: 'default' },
 };
 
 export const viewport = {

@@ -1,4 +1,5 @@
 import { GenerateStudyButton } from '../components/generate-study-button';
+import { InstallButton } from '../components/install-button';
 import { StudyCard } from '../components/study-card';
 import { listarEstudos } from '../lib/estudos';
 import styles from './estudos.module.css';
@@ -16,6 +17,13 @@ function indiceDaSemanaAtual(estudos) {
   return Math.max(indice, 0);
 }
 
+function abaDeHoje() {
+  const dia = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Sao_Paulo', weekday: 'short' }).format(
+    new Date(),
+  );
+  return dia === 'Sat' || dia === 'Sun' ? 'fim' : 'meio';
+}
+
 export default async function Home() {
   let estudos = [];
   let erro = null;
@@ -28,6 +36,7 @@ export default async function Home() {
   }
 
   const indiceAberto = indiceDaSemanaAtual(estudos);
+  const abaInicial = abaDeHoje();
 
   return (
     <main className={styles.pagina}>
@@ -37,7 +46,10 @@ export default async function Home() {
           Reunião do meio de semana e estudo de A Sentinela do fim de semana, com respostas e pontos de estudo gerados
           por Inteligência Artificial
         </p>
-        <GenerateStudyButton />
+        <div className={styles.acoes}>
+          <GenerateStudyButton />
+          <InstallButton />
+        </div>
       </header>
 
       {erro ? (
@@ -51,7 +63,7 @@ export default async function Home() {
       ) : (
         <div className={styles.lista}>
           {estudos.map((estudo, indice) => (
-            <StudyCard key={estudo.id} estudo={estudo} aberto={indice === indiceAberto} />
+            <StudyCard key={estudo.id} estudo={estudo} aberto={indice === indiceAberto} abaInicial={abaInicial} />
           ))}
         </div>
       )}
